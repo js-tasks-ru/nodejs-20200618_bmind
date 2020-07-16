@@ -32,7 +32,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use((ctx, next) => {
-  ctx.login = async function(user) {
+  ctx.login = async function (user) {
     const token = uuid();
     await Session.create({token, user, lastVisit: new Date()});
 
@@ -76,8 +76,8 @@ router.get('/me', mustBeAuthenticated, me);
 router.post('/register', handleMongooseValidationError, register);
 router.post('/confirm', confirm);
 
-router.get('/orders', getOrdersList);
-router.post('/orders', checkout);
+router.get('/orders', mustBeAuthenticated, getOrdersList);
+router.post('/orders', mustBeAuthenticated, checkout);
 
 app.use(router.routes());
 
